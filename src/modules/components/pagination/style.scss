@@ -1,0 +1,11 @@
+.pagination {
+    list-style-type: none;
+    display: flex;
+    .pageItem {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        justify-content: center;
+        border: 1px solid #ccc;
+    }
+}

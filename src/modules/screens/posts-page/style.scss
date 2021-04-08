@@ -1,0 +1,44 @@
+@import './../../../styles/mixins.scss';
+
+.postsPage {
+    @include flex-col;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    height: 100%;
+    .toolsbar {
+      width: 100%;
+      .transOnCreate {
+        border: 1px solid #2767C6;
+        border-radius: 6px;
+        background-color: #fff;
+        color: #2767C6;
+        outline: none;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+      }
+    } 
+    .postsWrap {
+      @include flex-col;
+      align-items: center;
+      width: 100%;
+      height: inherit;
+    }
+  }
+  
+  .overlay, .creatingPost {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.7);
+      transition: opacity 500ms;
+    }
+    .overlay, .creatingPost {
+      &:target {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
