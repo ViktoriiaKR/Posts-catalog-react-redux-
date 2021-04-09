@@ -37,6 +37,9 @@ const ModalPost = (props) => {
 
     const deletePost = () => {
         props.dispatch(removePost({id: props.id}));
+        if (props.backAfterDelete) {
+            props.backAfterDelete()
+        };
     };
 
     const handleSubmit = (e) => {
@@ -62,7 +65,11 @@ const ModalPost = (props) => {
                             <p>{infoPost.title}</p>
                             <p>{infoPost.body}</p>
                         </div> :
-                        <form id={infoPost.id} className={style.infoPost} onSubmit={handleSubmit}>
+                        <form
+                            id={infoPost.id}
+                            className={style.infoPost}
+                            onSubmit={handleSubmit}
+                        >
                             <input
                                 defaultValue={infoPost.title}
                                 placeholder='Заголовок товара (10 - 100 символов)'

@@ -1,14 +1,38 @@
-.post {
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 14px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    width: 70%;
-    p {
-       &:first-child {
-            font-weight: 700;
-            text-transform: uppercase;
-       }
-    } 
+@import './../../../styles/mixins.scss';
+
+.postsWrap {
+    @include flex-col;
+    align-items: center;
+    width: 100%;
+    height: inherit;
+    .post {
+        @include flex-col;
+        justify-content: space-between;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 14px;
+        margin-bottom: 12px;
+        width: 70%;
+        height: 120px;
+        p {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 100%;
+            overflow: hidden;
+            max-height: 44px;
+            &:first-child {
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    margin-bottom: 0;
+            }
+        } 
+    }
+}
+
+@media (max-width: 900px) {
+    .postsWrap {
+        .post {
+            width: 80%;
+        }
+    }
 }

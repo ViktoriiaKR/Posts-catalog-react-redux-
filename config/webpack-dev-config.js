@@ -11,7 +11,7 @@ const paths = require('./paths');
 const common = require('./webpack-common-config.js');
 
 module.exports = merge(common, {
-  entry: [paths.appIndexJs],
+  entry: ['@babel/polyfill', paths.appIndexJs],
   mode: 'development',
   devtool: 'eval',
   plugins: [

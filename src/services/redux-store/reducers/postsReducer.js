@@ -7,15 +7,16 @@ const initialState = {
 const postsReducer = (state = initialState, action) => {
    switch (action.type) {
        case type.ADD_FETCHED_DATA:
+
         let posts = action.payload;
         let arrEmpty = [];
         let filteredPosts = posts.concat(arrEmpty);
-        // filteredPosts.reverse();
         return {
             ...state,
             posts,
             filteredPosts
         };
+
         case type.FILTER_BY_VALUE:
             let newState = Object.assign({}, state);
             let value = action.payload.value;
@@ -36,6 +37,7 @@ const postsReducer = (state = initialState, action) => {
                 };
             };
             return newState;
+
         case type.SORT_POSTS_BY_USER:
             let sortByUserId = Object.assign({}, state);
             let sortedUserArr =
@@ -53,38 +55,37 @@ const postsReducer = (state = initialState, action) => {
                 sortByUserId.usedFilters
             );
             return sortByUserId;
+
         case type.REMOVE_POST:
             let deletePost = Object.assign({}, state);
             let id = action.payload.id;
-            if (confirm("Вы действительно хотите удалить этот пост?")) {
-                const deletionInMainArr = state.posts.filter(item => item.id !== id);
-                deletePost.posts = deletionInMainArr;
-
-                const deletionInWorkArr = state.filteredPosts.filter(item => item.id !== id);
-                deletePost.filteredPosts = deletionInWorkArr;
-            } else {
-                alert('Вы отменили удаление');
-            };
-            return deletePost;
-            case type.NEW_POST:
-                let pushPost = Object.assign({}, state);
-                let newPostObj = action.payload;
             
-                const pushToMainArr = state.posts.concat(newPostObj);
-                pushPost.posts = pushToMainArr;
+            const deletionInMainArr = state.posts.filter(item => item.id !== id);
+            deletePost.posts = deletionInMainArr;
 
-                const pushToWorkArr = state.filteredPosts.concat(newPostObj);
-                pushPost.filteredPosts = pushToWorkArr
+            const deletionInWorkArr = state.filteredPosts.filter(item => item.id !== id);
+            deletePost.filteredPosts = deletionInWorkArr;
+            return deletePost;
 
-                return pushPost; 
-            case type.UPDATE_POST:
-                const elementsIndex = state.posts.find(element => element.id == action.payload.id)
-                elementsIndex.title = action.payload.title
-                elementsIndex.body = action.payload.body
-                return state
+        case type.NEW_POST:
+            let pushPost = Object.assign({}, state);
+            let newPostObj = action.payload;
+            
+            const pushToMainArr = [ newPostObj, ...state.posts];
+            pushPost.posts = pushToMainArr;
+    
+            const pushToWorkArr = [ newPostObj, ...state.filteredPosts];
+            pushPost.filteredPosts = pushToWorkArr;
+            return pushPost; 
+
+        case type.UPDATE_POST:
+            const elementsIndex = state.posts.find(element => element.id == action.payload.id);
+            elementsIndex.title = action.payload.title;
+            elementsIndex.body = action.payload.body;
+            return state
        default:
            return state;
-   }
+   };
 };
 
 export default postsReducer;
