@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import style from './style.scss';
 import { connect } from 'react-redux';
 import { addNewPost } from '../../../services/redux-store/actions/index';
+import { v4 as uuidv4 } from 'uuid';
 
 const mapStateToProps = state => {
     return {
@@ -16,7 +17,7 @@ const CreatePost = (props) => {
     const [ bodyForm, setBodyForm] = useState('');
 
     const handleNewPost = (e) => {
-        let id = PostsArrayCount.length + 1
+        let id = uuidv4();
         let userId = 15;
         props.dispatch(addNewPost({id: id, title: titleForm, body: bodyForm, userId: userId}));
         if (props.callback) {

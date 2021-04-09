@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import style from './style.scss';
-import Post from './../../components/data-post/index';
 import Searchbar from './../../components/search-bar/index';
 import { Pagination } from 'antd';
 import 'antd/dist/antd.css';
@@ -8,6 +7,8 @@ import { connect } from 'react-redux';
 import { store } from './../../../index';
 import ModalPost from './../../components/modal-post/index';
 import CreatePost from '../../components/create-post/index'
+import Posts from './../../../modules/components/data-post/index';
+import PaginationOwn from './../../components/pagination/index';
 
 const mapStateToProps = state => {
     return {
@@ -17,61 +18,59 @@ const mapStateToProps = state => {
 
 const PostsPage = (props) => {
     let posts = props.state.postsReducer.filteredPosts;
-    const pageSize = 5;
 
     const [ isOpenModal, setIsOpenModal ] = useState(false);
     const [ isOpenCreating, setIsOpenCreating ] = useState(false);
 
     const [ idModal, setIdModal ] = useState('');
     const [ userIdModal, setUserIdModal ] = useState('');
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(6);
  
-useEffect(() => {
-    store.subscribe(() => { 
-        console.log('subscribe', store.getState())
-    });
+    useEffect(() => {
+        store.subscribe(() => { 
+            console.log('subscribe', store.getState())
+        });
+    }, []);
 
-}, []);
 
+    const onOpenPost = (id, userId) => {
+        setIdModal(id);
+        setUserIdModal(userId);
+        setIsOpenModal(true);
+    };
 
-const onOpen = (id, userId) => {
-    setIdModal(id);
-    setUserIdModal(userId);
-    setIsOpenModal(true);
-}
+    const onCancelModal = () => {
+        setIsOpenModal(!isOpenModal)
+    };
 
-const onCancel = () => {
-    setIsOpenModal(!isOpenModal)
-}
+    const routeToNewPost = () => {
+        setIsOpenCreating(!isOpenCreating)
+    };
 
-const routeToNewPost = () => {
-    setIsOpenCreating(!isOpenCreating)
-}
+    // Get current posts
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+
+    // Change page
+    const pagChangePage = pageNumber => setCurrentPage(pageNumber);
 
     return (
-
         <div className={style.postsPage}>
             <div className={style.toolsbar}>
                <Searchbar />
                 <button onClick={routeToNewPost} className={style.transOnCreate}>+</button>
             </div>
             {
-                posts.length && posts.length !== 0 ?
-                <div className={style.postsWrap}>
-                    { posts && posts.length && posts.map(
-                        (data, index) =>
-                            (
-                                <React.Fragment key={index}>
-                                    <Post
-                                        id={data.id}
-                                        title={data.title}
-                                        body={data.body}
-                                        onClick={onOpen.bind(null,data.id, data.userId)}
-                                    />
-                                </React.Fragment>
-                            )
-                    )}
-                </div>
-                : <div className={style.recommendation}>
+                posts.length !== 0 ?
+                <Posts
+                    posts={currentPosts}
+                    onClick={onOpenPost}
+                />
+                : 
+                <div className={style.recommendation}>
                     <h2>По запросу ничего не найдено...</h2>
                     <p>Рекомендации:</p>
                     <p>Попробуйте использовать другие ключевые слова.</p>
@@ -91,14 +90,20 @@ const routeToNewPost = () => {
                 isOpenModal ? 
                     <div id="#popup1" className={style.overlay}>
                         <ModalPost
-                            close={onCancel}
+                            close={onCancelModal}
                             id={idModal}
                             userId={userIdModal}
                             show={isOpenModal}
+                            backAfterDelete={onCancelModal}
                         />
                     </div>
                 : null
             }
+            <PaginationOwn 
+                postsPerPage={postsPerPage}
+                totalPosts={posts.length}
+                paginate={pagChangePage}
+            />
         </div>
     );
 };
