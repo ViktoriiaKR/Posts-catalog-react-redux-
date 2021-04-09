@@ -1,4 +1,4 @@
-# react-scss-webpack
+# react-redux-webpack
 
 ## Available Scripts
 
