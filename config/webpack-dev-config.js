@@ -37,10 +37,10 @@ module.exports = merge(common, {
           },
         },
       },
-      {
-        use: ['style-loader', 'css-loader'],
-        test: /\.css$/
-      },
+      // {
+      //   use: ['style-loader', 'css-loader'],
+      //   test: /\.css$/
+      // },
       {
         test: /\.(css|scss)$/,
         include: [path.resolve(paths.appSrc)],

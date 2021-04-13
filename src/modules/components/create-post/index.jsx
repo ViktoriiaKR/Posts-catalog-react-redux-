@@ -10,19 +10,26 @@ const mapStateToProps = state => {
     };
 };
 
-const CreatePost = (props) => {
-    const PostsArrayCount = props.state.postsReducer.posts
+const mapDispatchToProps = dispatch => {
+    return {
+        addNewPost: (id, userId, titleForm, bodyForm) => dispatch(addNewPost(id, userId, titleForm, bodyForm))
+    };
+};
 
+const CreatePost = (props) => {
     const [ titleForm, setTitleForm] = useState('');
     const [ bodyForm, setBodyForm] = useState('');
 
     const handleNewPost = (e) => {
         let id = uuidv4();
         let userId = 15;
-        props.dispatch(addNewPost({id: id, title: titleForm, body: bodyForm, userId: userId}));
+
+        props.addNewPost({id: id, title: titleForm, body: bodyForm, userId: userId});
+
         if (props.callback) {
             props.callback()
         };
+        
         e.preventDefault();
     };
 
@@ -50,4 +57,4 @@ const CreatePost = (props) => {
     );
 };
 
-export default connect(mapStateToProps, null)(CreatePost);
+export default connect(mapStateToProps, mapDispatchToProps)(CreatePost);

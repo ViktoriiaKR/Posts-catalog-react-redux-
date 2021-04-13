@@ -6,7 +6,7 @@ const PaginationOwn = (props) => {
 
     for (let i = 1; i <= Math.ceil(props.totalPosts / props.postsPerPage); i++) {
         pageNumbers.push(i);
-    }
+    };
 
     return (
         <nav>

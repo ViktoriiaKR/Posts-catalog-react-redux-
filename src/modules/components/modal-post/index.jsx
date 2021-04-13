@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import style from './style.scss';
-import  {store}  from './../../../index';
 import { fetchDataDetails } from '../../../services/redux-store/actions';
 import { DeletePostIcon, EditPostIcon } from './../../../const/img';
 import { removePost, updateExistPost } from './../../../services/redux-store/actions/index';
@@ -9,6 +8,14 @@ import { removePost, updateExistPost } from './../../../services/redux-store/act
 const mapStateToProps = state => {
     return {
         state
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchDataDetails: (id) => dispatch(fetchDataDetails(id)),
+        updateExistPost: (id, title, body) => dispatch(updateExistPost(id, title, body)),
+        removePost: (id) => dispatch(removePost({id: id}))
     };
 };
 
@@ -23,7 +30,7 @@ const ModalPost = (props) => {
     const [ clickInput, setClickInput ] = useState(false);
 
     useEffect(() => {
-        store.dispatch(fetchDataDetails(props.id));
+        props.fetchDataDetails(props.id);
         async function searchItem() {
             let item = aboutPost.find(item => item.id === props.id);
             setInfoPost(item);
@@ -36,14 +43,14 @@ const ModalPost = (props) => {
     };
 
     const deletePost = () => {
-        props.dispatch(removePost({id: props.id}));
+        props.removePost(props.id);
         if (props.backAfterDelete) {
             props.backAfterDelete()
         };
     };
 
     const handleSubmit = (e) => {
-        props.dispatch(updateExistPost({title: title.current.value, body: body.current.value, id: props.id}));
+        props.updateExistPost({title: title.current.value, body: body.current.value, id: props.id});
         setClickInput(false);
         e.preventDefault();
     };
@@ -106,4 +113,4 @@ const ModalPost = (props) => {
     );
 };
 
-export default connect(mapStateToProps, null)(ModalPost);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalPost);

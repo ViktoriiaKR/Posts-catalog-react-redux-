@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import style from './style.scss';
 import Searchbar from './../../components/search-bar/index';
-import { Pagination } from 'antd';
-import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
 import { store } from './../../../index';
 import ModalPost from './../../components/modal-post/index';
@@ -25,8 +23,8 @@ const PostsPage = (props) => {
     const [ idModal, setIdModal ] = useState('');
     const [ userIdModal, setUserIdModal ] = useState('');
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage] = useState(6);
+    const [ currentPage, setCurrentPage ] = useState(1);
+    const [ postsPerPage ] = useState(6);
  
     useEffect(() => {
         store.subscribe(() => { 
@@ -52,59 +50,63 @@ const PostsPage = (props) => {
     // Get current posts
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
     // Change page
     const pagChangePage = pageNumber => setCurrentPage(pageNumber);
 
     return (
-        <div className={style.postsPage}>
-            <div className={style.toolsbar}>
-               <Searchbar />
-                <button onClick={routeToNewPost} className={style.transOnCreate}>+</button>
-            </div>
-            {
-                posts.length !== 0 ?
-                <Posts
-                    posts={currentPosts}
-                    onClick={onOpenPost}
-                />
-                : 
-                <div className={style.recommendation}>
-                    <h2>По запросу ничего не найдено...</h2>
-                    <p>Рекомендации:</p>
-                    <p>Попробуйте использовать другие ключевые слова.</p>
-                </div>
-            }
-            {
-                isOpenCreating ? 
-                    <div id="#popup2" className={style.creatingPost}>
-                        <CreatePost 
-                            cancelCreate={routeToNewPost}
-                            callback={routeToNewPost}
-                        />
-                    </div> 
-                : null   
-            }
-            {
-                isOpenModal ? 
-                    <div id="#popup1" className={style.overlay}>
-                        <ModalPost
-                            close={onCancelModal}
-                            id={idModal}
-                            userId={userIdModal}
-                            show={isOpenModal}
-                            backAfterDelete={onCancelModal}
-                        />
+        <>
+            { posts !== undefined ?
+                <div className={style.postsPage}>
+                    <div className={style.toolsbar}>
+                    <Searchbar />
+                        <button onClick={routeToNewPost} className={style.transOnCreate}>+</button>
                     </div>
+                    {
+                        posts.length !== 0 ?
+                        <Posts
+                            posts={posts.slice(indexOfFirstPost, indexOfLastPost)}
+                            onClick={onOpenPost}
+                        />
+                        : 
+                        <div className={style.recommendation}>
+                            <h2>По запросу ничего не найдено...</h2>
+                            <p>Рекомендации:</p>
+                            <p>Попробуйте использовать другие ключевые слова.</p>
+                        </div>
+                    }
+                    {
+                        isOpenCreating ? 
+                            <div id="#popup2" className={style.creatingPost}>
+                                <CreatePost 
+                                    cancelCreate={routeToNewPost}
+                                    callback={routeToNewPost}
+                                />
+                            </div> 
+                        : null   
+                    }
+                    {
+                        isOpenModal ? 
+                            <div id="#popup1" className={style.overlay}>
+                                <ModalPost
+                                    close={onCancelModal}
+                                    id={idModal}
+                                    userId={userIdModal}
+                                    show={isOpenModal}
+                                    backAfterDelete={onCancelModal}
+                                />
+                            </div>
+                        : null
+                    }
+                    <PaginationOwn 
+                        postsPerPage={postsPerPage}
+                        totalPosts={posts.length}
+                        paginate={pagChangePage}
+                    />
+                </div>
                 : null
             }
-            <PaginationOwn 
-                postsPerPage={postsPerPage}
-                totalPosts={posts.length}
-                paginate={pagChangePage}
-            />
-        </div>
+        </>
     );
 };
 

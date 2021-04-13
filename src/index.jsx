@@ -6,8 +6,6 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import rootReducer from './services/redux-store/reducers';
 import { fetchData } from './services/redux-store/actions'
-import "@babel/polyfill";
-
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));
 store.dispatch(fetchData());
