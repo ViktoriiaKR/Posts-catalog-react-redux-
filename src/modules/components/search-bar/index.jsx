@@ -6,22 +6,29 @@ import { filterByValue, sortByUser } from './../../../services/redux-store/actio
 
 const mapStateToProps = (state) => {
   return { state };
-}
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        filterByValue: (value) => dispatch(filterByValue(value)),
+        sortByUser: (direction) => dispatch(sortByUser(direction))
+    };
+};
 
 const Searchbar = (props) => {
 
-    function searchByInput(e) {
+    const searchByInput = (e) => {
         let input = e.target.value;
-        props.dispatch(filterByValue({value: input}))
+        props.filterByValue({value: input})
     }; 
 
     const sortingPosts = (e) => {
         let value = e.target.value;
         let direction = value.endsWith('asc') ? "asc" : "desc";
-        props.dispatch(sortByUser({direction})) 
+        props.sortByUser({direction})
     };
 
-    function onSubmitSearch(e) {
+    const onSubmitSearch = (e) => {
         e.preventDefault();
     };
 
@@ -49,4 +56,4 @@ const Searchbar = (props) => {
     );
 };
 
-export default connect(mapStateToProps, null)(Searchbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Searchbar);

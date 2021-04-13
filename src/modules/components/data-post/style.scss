@@ -13,19 +13,27 @@
         padding: 14px;
         margin-bottom: 12px;
         width: 70%;
-        height: 120px;
+        height: 85px;
+        font-family: Arial, sans-serif;
         p {
             white-space: nowrap;
             text-overflow: ellipsis;
             width: 100%;
             overflow: hidden;
             max-height: 44px;
+            font-size: 14px;
             &:first-child {
-                    font-weight: 700;
-                    text-transform: uppercase;
-                    margin-bottom: 0;
+                font-size: 16px;
+                font-weight: 700;
+                text-transform: uppercase;
+                margin: 0;
             }
         } 
+        a {
+            color: #2767C6;
+            cursor: pointer;
+            font-size: 14px;
+        }
     }
 }
 

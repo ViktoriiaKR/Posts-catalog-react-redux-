@@ -76,6 +76,7 @@ const postsReducer = (state = initialState, action) => {
     
             const pushToWorkArr = [ newPostObj, ...state.filteredPosts];
             pushPost.filteredPosts = pushToWorkArr;
+            
             return pushPost; 
 
         case type.UPDATE_POST:
