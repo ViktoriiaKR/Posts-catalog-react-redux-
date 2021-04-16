@@ -11,12 +11,10 @@ const mapStateToProps = state => {
     };
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        fetchDataDetails: (id) => dispatch(fetchDataDetails(id)),
-        updateExistPost: (id, title, body) => dispatch(updateExistPost(id, title, body)),
-        removePost: (id) => dispatch(removePost({id: id}))
-    };
+const mapDispatchToProps = {
+    fetchDataDetails,
+    updateExistPost,
+    removePost
 };
 
 const ModalPost = (props) => {
@@ -43,7 +41,7 @@ const ModalPost = (props) => {
     };
 
     const deletePost = () => {
-        props.removePost(props.id);
+        props.removePost({id: props.id});
         if (props.backAfterDelete) {
             props.backAfterDelete()
         };

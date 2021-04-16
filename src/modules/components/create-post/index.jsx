@@ -10,10 +10,8 @@ const mapStateToProps = state => {
     };
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        addNewPost: (id, userId, titleForm, bodyForm) => dispatch(addNewPost(id, userId, titleForm, bodyForm))
-    };
+const mapDispatchToProps =  {
+        addNewPost
 };
 
 const CreatePost = (props) => {

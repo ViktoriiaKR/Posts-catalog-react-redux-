@@ -8,11 +8,9 @@ const mapStateToProps = (state) => {
   return { state };
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        filterByValue: (value) => dispatch(filterByValue(value)),
-        sortByUser: (direction) => dispatch(sortByUser(direction))
-    };
+const mapDispatchToProps = {
+    filterByValue,
+    sortByUser
 };
 
 const Searchbar = (props) => {
